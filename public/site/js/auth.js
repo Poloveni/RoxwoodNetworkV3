@@ -385,8 +385,9 @@
       refresh.addEventListener("click", function () {
         var alertBox = root.querySelector(".alert--ok");
         if (!alertBox) return;
+        // Honnêteté : rien n'est branché tant que le bot n'expose pas d'API de lecture.
         alertBox.textContent =
-          "Flux synchronisé — dernières candidatures, commandes et journaux récupérés depuis le bot.";
+          "Rien à synchroniser pour l'instant : le tableau de bord n'est pas encore relié à la base du bot. Les lignes affichées sont des exemples.";
         alertBox.classList.add("is-visible");
       });
     }
