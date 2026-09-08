@@ -18,9 +18,12 @@
     <div class="container">
       <span class="status"><i></i>Connecté — flux du bot actif</span>
       <h1 style="margin-top:.8rem">Tableau de bord</h1>
-      <p class="section-lead">
-        Bonjour <b data-user-name>Membre</b> — <span data-user-role>Accès lecture</span>.
-      </p>
+      <div class="dash-identity">
+        <img class="dash-avatar" data-user-avatar alt="" hidden>
+        <p class="section-lead" style="margin:0">
+          Bonjour <b data-user-name>Membre</b> — <span data-user-role>Accès lecture</span>.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -141,6 +144,7 @@
 
   <div data-footer></div>
   <script src="js/main.js"></script>
+  <script src="js/discord-config.js"></script>
   <script src="js/auth.js"></script>
 </body>
 </html>

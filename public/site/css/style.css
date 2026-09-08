@@ -29,6 +29,10 @@
 /* ---------- 2. Base ---------- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* .btn est en display:inline-flex : sans cette règle, l'attribut hidden
+   serait ignoré sur les boutons et liens de l'espace membre. */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -458,6 +462,14 @@ img { max-width: 100%; display: block; }
 /* ---------- 9. Dashboard ---------- */
 .dash-grid { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 1.5rem; align-items: start; }
 @media (max-width: 900px) { .dash-grid { grid-template-columns: 1fr; } }
+
+.dash-identity { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+.dash-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid var(--line);
+  box-shadow: var(--glow-cyan);
+  object-fit: cover;
+}
 
 .dash-side { padding: 1.4rem; border-radius: var(--radius); border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); }
 .dash-side nav { display: grid; gap: 0.3rem; margin-top: 1rem; }
