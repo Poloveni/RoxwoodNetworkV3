@@ -15,8 +15,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Roxwood Network — Agence Digitale" },
       {
         property: "og:description",
-        content:
-          "Sites vitrines, portails internes et interfaces sécurisées, conçus sur mesure.",
+        content: "Sites vitrines, portails internes et interfaces sécurisées, conçus sur mesure.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -25,14 +24,18 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+// import.meta.env.BASE_URL vaut "/" en dev et "/RoxwoodNetworkV3/" sur GitHub Pages.
+// Il se termine toujours par "/", donc on concatène directement.
+const SITE_URL = `${import.meta.env.BASE_URL}site/index.html`;
+
 function Index() {
   useEffect(() => {
-    window.location.replace("/site/index.html");
+    window.location.replace(SITE_URL);
   }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
-      <a className="text-foreground underline" href="/site/index.html">
+      <a className="text-foreground underline" href={SITE_URL}>
         Ouvrir le site Roxwood Network
       </a>
     </div>

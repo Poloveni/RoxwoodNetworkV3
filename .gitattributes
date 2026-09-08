@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Modeles 3D / binaires : jamais de normalisation de fin de ligne
+*.glb binary
+*.gltf binary

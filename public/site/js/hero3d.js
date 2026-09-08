@@ -4,7 +4,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-const MODEL_URL = "/__l5e/assets-v1/5d24afbd-be7c-40c2-b209-ced3716a92c4/crystal.glb";
+// Chemin résolu depuis l'emplacement de ce script (site/js/ -> site/models/).
+// Reste valide quelle que soit la racine de publication : "/" en local,
+// "/RoxwoodNetworkV3/" sur GitHub Pages.
+const MODEL_URL = new URL("../models/crystal.glb", import.meta.url).href;
 
 const mount = document.querySelector("[data-hero3d]");
 if (mount && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -43,6 +46,13 @@ if (mount && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const draco = new DRACOLoader().setDecoderPath("https://unpkg.com/three@0.169.0/examples/jsm/libs/draco/");
   const loader = new GLTFLoader().setDRACOLoader(draco);
 
+  // Le reste de la page (étoiles, titre, bouton) doit rester intact même si le
+  // modèle est absent : on masque simplement le conteneur 3D.
+  const onModelError = (error) => {
+    console.error("hero3d: modèle 3D introuvable", MODEL_URL, error);
+    mount.style.display = "none";
+  };
+
   loader.load(MODEL_URL, (gltf) => {
     const model = gltf.scene;
     const box = new THREE.Box3().setFromObject(model);
@@ -59,7 +69,7 @@ if (mount && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     });
     group.add(model);
     mount.classList.add("is-ready");
-  });
+  }, undefined, onModelError);
 
   // Interaction : glisser pour faire tourner le cristal, molette pour zoomer.
   const pointer = { x: 0, y: 0 };
