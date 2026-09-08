@@ -1,0 +1,13 @@
+# ROXWOOD NETWORK V3 — API de lecture de l'espace membre
+# Le site public est sur GitHub Pages ; seule l'API vit ici.
+http://roxwoodnetworkv3.duckdns.org {
+        redir https://{host}{uri} permanent
+}
+
+roxwoodnetworkv3.duckdns.org {
+        encode zstd gzip
+
+        reverse_proxy roxwood-network-bot-1:8080 {
+                header_up X-Real-IP {remote_host}
+        }
+}
