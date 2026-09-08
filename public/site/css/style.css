@@ -464,6 +464,11 @@ img { max-width: 100%; display: block; }
 .dash-grid { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 1.5rem; align-items: start; }
 @media (max-width: 900px) { .dash-grid { grid-template-columns: 1fr; } }
 
+.dash-flags { display: flex; flex-wrap: wrap; gap: 1.4rem; margin-top: 1.2rem; }
+.dash-state { margin-top: 1rem; }
+.dash-state--loading, .dash-state--empty { color: var(--grey); }
+.dash-state--error { color: #ffb9f3; }
+
 .dash-identity { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 .dash-avatar {
   width: 48px; height: 48px; border-radius: 50%;

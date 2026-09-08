@@ -21,7 +21,7 @@
       <div class="dash-identity">
         <img class="dash-avatar" data-user-avatar alt="" hidden>
         <p class="section-lead" style="margin:0">
-          Bonjour <b data-user-name>Membre</b> — <span data-user-role>Accès lecture</span>.
+          Bonjour <b data-user-name>Membre</b> — <span data-user-role>…</span>.
         </p>
       </div>
     </div>
@@ -33,208 +33,154 @@
       <aside class="dash-side reveal reveal--left">
         <h4 style="font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)">Navigation</h4>
         <nav>
-          <a href="#apercu" class="is-active">Vue d'ensemble</a>
-          <a href="#recrutement">Recrutement</a>
-          <a href="#commandes">Commandes &amp; factures</a>
-          <a href="#catalogue">Catalogue &amp; boutique</a>
-          <a href="#absences">Absences</a>
-          <a href="#activite">Activité en jeu</a>
-          <a href="#coffre">Coffre d'entreprise</a>
-          <a href="#flux">Flux sortants</a>
+          <a href="#apercu" data-nav="overview" class="is-active">Vue d'ensemble</a>
+          <a href="#recrutement" data-nav="recruitment">Recrutement</a>
+          <a href="#commandes" data-nav="orders">Commandes &amp; factures</a>
+          <a href="#catalogue" data-nav="catalog">Catalogue &amp; boutique</a>
+          <a href="#absences" data-nav="absences">Absences</a>
+          <a href="#activite" data-nav="monitoring">Activité en jeu</a>
+          <a href="#coffre" data-nav="storage">Coffre d'entreprise</a>
+          <a href="#flux" data-nav="webhooks">Flux sortants</a>
         </nav>
-        <button class="btn btn--ghost btn--block" style="margin-top:1.4rem" type="button" data-logout>Déconnexion</button>
+        <button class="btn btn--primary btn--block" style="margin-top:1.4rem" type="button" data-refresh>Actualiser</button>
+        <button class="btn btn--ghost btn--block" style="margin-top:.6rem" type="button" data-logout>Déconnexion</button>
       </aside>
 
       <div style="display:grid;gap:1.5rem">
 
-        <div class="alert alert--note is-visible">
-          <b>Données d'exemple.</b> Les chiffres et les lignes ci-dessous sont illustratifs. Leur
-          structure reproduit celle des événements réellement émis par le bot : le jour où une API de
-          lecture est branchée sur sa base, chaque bloc se remplit sans changer de forme.
-        </div>
-
         <!-- Vue d'ensemble -->
-        <section id="apercu" style="display:grid;gap:1.5rem">
+        <section id="apercu" data-section="overview" style="display:grid;gap:1rem">
           <div class="grid grid--4">
-            <div class="card reveal"><div class="kpi"><strong>4</strong><span>Candidatures à traiter</span></div></div>
-            <div class="card reveal" data-delay="80"><div class="kpi"><strong>3</strong><span>Commandes impayées</span></div></div>
-            <div class="card reveal" data-delay="160"><div class="kpi"><strong>2</strong><span>Absences en attente</span></div></div>
-            <div class="card reveal" data-delay="240"><div class="kpi"><strong>128</strong><span>Logs en jeu (24 h)</span></div></div>
+            <div class="card reveal" data-kpi="pendingApplications"><div class="kpi"><strong>—</strong><span>Candidatures à traiter</span></div></div>
+            <div class="card reveal" data-delay="80" data-kpi="unpaidOrders"><div class="kpi"><strong>—</strong><span>Commandes impayées</span></div></div>
+            <div class="card reveal" data-delay="160" data-kpi="pendingAbsences"><div class="kpi"><strong>—</strong><span>Absences en attente</span></div></div>
+            <div class="card reveal" data-delay="240" data-kpi="logs24h"><div class="kpi"><strong>—</strong><span>Logs en jeu (24 h)</span></div></div>
           </div>
-          <div class="alert alert--ok"></div>
+          <p class="form-note dash-state" data-state="overview" hidden></p>
         </section>
 
         <!-- Recrutement -->
-        <section id="recrutement" class="panel reveal">
-          <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center">
-            <h2 style="font-size:1.25rem">Recrutement</h2>
-            <button class="btn btn--primary" type="button" data-refresh>Actualiser</button>
-          </div>
+        <section id="recrutement" data-section="recruitment" class="panel reveal">
+          <h2 style="font-size:1.25rem">Recrutement</h2>
           <p class="form-note" style="margin-top:.6rem">
             Le candidat remplit le formulaire dès l'ouverture de son ticket — 5 questions
             configurables, resoumission refusée — puis dépose ses pièces jointes : 3 fichiers,
-            8 Mo chacun, chargés en une seule fois. Le staff pilote la suite au bouton depuis le
-            salon de suivi. <span class="tag">recruitment.updated</span>
+            8 Mo chacun. Le staff pilote la suite au bouton depuis le salon de suivi.
           </p>
 
-          <div style="display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:1.2rem">
-            <span class="status"><i></i>Recrutements ouverts</span>
-            <span class="status"><i></i>Catégorie d'acceptation définie</span>
-            <span class="status status--warn"><i></i>Rôle d'acceptation non défini</span>
-          </div>
+          <div class="dash-flags" data-recruitment-flags></div>
 
           <div class="table-wrap" style="margin-top:1.2rem">
             <table>
-              <thead><tr><th>Candidat</th><th>Statut</th><th>Recruteur</th><th>Pièces jointes</th></tr></thead>
-              <tbody>
-                <tr><td>Ethan Vance</td><td><span class="status"><i></i>Accepté</span></td><td>Poulpizar</td><td>2 fichiers</td></tr>
-                <tr><td>Nora Kessler</td><td><span class="status status--warn"><i></i>Entretien</span></td><td>Marina L.</td><td>1 fichier</td></tr>
-                <tr><td>Diego Ruiz</td><td><span class="status status--warn"><i></i>En attente</span></td><td>Non assigné</td><td>—</td></tr>
-                <tr><td>Camille Roy</td><td><span class="status status--off"><i></i>Refusé</span></td><td>Poulpizar</td><td>3 fichiers</td></tr>
-              </tbody>
+              <thead><tr><th>Candidat</th><th>Statut</th><th>Recruteur</th><th>Pièces jointes</th><th>Mise à jour</th></tr></thead>
+              <tbody data-list="recruitment"></tbody>
             </table>
           </div>
-
-          <p class="form-note" style="margin-top:1rem">
-            À l'acceptation — manuelle, ou déclenchée par un log d'embauche en jeu — le salon du
-            ticket est déplacé vers la catégorie dédiée et le rôle configuré est attribué. Ces deux
-            effets sont optionnels et indépendants : si l'un échoue, l'acceptation tient quand même.
-          </p>
+          <p class="form-note dash-state" data-state="recruitment" hidden></p>
         </section>
 
         <!-- Commandes & factures -->
-        <section id="commandes" class="panel reveal">
+        <section id="commandes" data-section="orders" class="panel reveal">
           <h2 style="font-size:1.25rem">Commandes &amp; factures</h2>
           <p class="form-note" style="margin-top:.6rem">
-            Le client compose sa commande lui-même dans son ticket ; le staff confirme le paiement,
-            ce qui génère la facture. Statut de commande et statut de paiement sont deux axes
-            distincts. Le numéro de facture est un compteur séquentiel propre au serveur, pas une
-            chaîne aléatoire. <span class="tag">order.updated</span>
+            Le client compose sa commande lui-même dans son ticket ; le staff confirme le
+            paiement, ce qui génère la facture. Statut de commande et statut de paiement sont
+            deux axes distincts. Les totaux sont calculés par le bot lui-même : ce sont ceux
+            de la facture Discord, au centime près.
           </p>
           <div class="table-wrap" style="margin-top:1.2rem">
             <table>
               <thead><tr><th>Facture</th><th>Client</th><th>Articles</th><th>Total</th><th>Commande</th><th>Paiement</th></tr></thead>
-              <tbody>
-                <tr><td>n° 142</td><td>Dynasty 8</td><td>Pack vitrine + hébergement</td><td>18 500 $</td><td><span class="status"><i></i>Livrée</span></td><td><span class="status"><i></i>Payée</span></td></tr>
-                <tr><td>n° 143</td><td>Marlowe Vineyard</td><td>Refonte + galerie</td><td>12 000 $</td><td><span class="status status--warn"><i></i>En préparation</span></td><td><span class="status"><i></i>Payée</span></td></tr>
-                <tr><td>—</td><td>Client privé</td><td>Interface confidentielle</td><td>24 000 $</td><td><span class="status status--warn"><i></i>En attente</span></td><td><span class="status status--off"><i></i>Impayée</span></td></tr>
-                <tr><td>—</td><td>Atelier Kovacs</td><td>Commande abandonnée</td><td>—</td><td><span class="status status--off"><i></i>Annulée</span></td><td><span class="status status--off"><i></i>Impayée</span></td></tr>
-              </tbody>
+              <tbody data-list="orders"></tbody>
             </table>
           </div>
-          <ul class="feature-list" style="margin-top:1.2rem">
-            <li><i class="dot"></i><div><b>Sous-total, livraison, réduction</b><span>Livraison en montant fixe, réduction en pourcentage du sous-total, toutes deux répercutées sur le total affiché.</span></div></li>
-            <li><i class="dot"></i><div><b>Poids total et camions requis</b><span>Calculés seulement si au moins un article porte un poids et qu'une capacité de camion est définie — sinon les deux champs sont omis plutôt qu'affichés à zéro.</span></div></li>
-          </ul>
+          <p class="form-note dash-state" data-state="orders" hidden></p>
         </section>
 
         <!-- Catalogue & boutique -->
-        <section id="catalogue" class="panel reveal">
+        <section id="catalogue" data-section="catalog" class="panel reveal">
           <h2 style="font-size:1.25rem">Catalogue &amp; boutique</h2>
           <p class="form-note" style="margin-top:.6rem">
-            Configuré au bouton depuis le panneau d'administration Discord. Chaque article porte une
-            photo, un prix, un poids unitaire optionnel et jusqu'à 5 champs remplis par le client au
-            moment de commander — un champ de style <i>Quantité</i> alimente le calcul du prix, les
-            autres sont enregistrés et repris sur la facture.
+            Configuré au bouton depuis le panneau d'administration Discord. Un champ de style
+            <i>Quantité</i> alimente le calcul du prix ; les autres sont repris sur la facture.
           </p>
           <div class="table-wrap" style="margin-top:1.2rem">
             <table>
               <thead><tr><th>Article</th><th>Prix</th><th>Poids unitaire</th><th>Champs client</th><th>Photo</th></tr></thead>
-              <tbody>
-                <tr><td>Pack vitrine</td><td>18 500 $</td><td>—</td><td>Nom d'entreprise, Délai</td><td><span class="status"><i></i>Définie</span></td></tr>
-                <tr><td>Portail interne</td><td>24 000 $</td><td>—</td><td>Nombre d'accès <span class="tag">Quantité</span></td><td><span class="status"><i></i>Définie</span></td></tr>
-                <tr><td>Caisse de matériel</td><td>750 $</td><td>1 200 g</td><td>Quantité <span class="tag">Quantité</span></td><td><span class="status status--off"><i></i>Aucune</span></td></tr>
-              </tbody>
+              <tbody data-list="catalog"></tbody>
             </table>
           </div>
-          <ul class="feature-list" style="margin-top:1.2rem">
-            <li><i class="dot"></i><div><b>Profil boutique</b><span>RIB, téléphone, message de remerciement et bannière, saisis une fois pour tout le serveur et repris sur chaque facture.</span></div></li>
-            <li><i class="dot"></i><div><b>Images stockées en base</b><span>Le bot conserve les octets plutôt que l'URL Discord, qui cesse de répondre dès que son message est supprimé. Aucun stockage externe.</span></div></li>
-          </ul>
+          <p class="form-note dash-state" data-state="catalog" hidden></p>
+          <ul class="feature-list" style="margin-top:1.2rem" data-shop></ul>
         </section>
 
         <div class="grid grid--2">
           <!-- Absences -->
-          <section id="absences" class="panel reveal">
+          <section id="absences" data-section="absences" class="panel reveal">
             <h2 style="font-size:1.25rem">Absences</h2>
             <p class="form-note" style="margin-top:.6rem">
-              Déclarées avec <b>/absence</b> — dates et motif — puis acceptées ou refusées par l'un
-              des rôles approbateurs. <span class="tag">absence.updated</span>
+              Déclarées avec <b>/absence</b>, puis acceptées ou refusées par l'un des rôles
+              approbateurs.
             </p>
-            <ul class="feature-list" style="margin-top:1rem">
-              <li><i class="dot"></i><div><b>Marina L. — 12/09 au 15/09</b><span>Acceptée par Poulpizar.</span></div></li>
-              <li><i class="dot"></i><div><b>Diego R. — 14/09 au 16/09</b><span>En attente d'un approbateur.</span></div></li>
-              <li><i class="dot"></i><div><b>Ethan V. — 20/09</b><span>Refusée par Marina L.</span></div></li>
-            </ul>
+            <ul class="feature-list" style="margin-top:1rem" data-list="absences"></ul>
+            <p class="form-note dash-state" data-state="absences" hidden></p>
           </section>
 
           <!-- Activité en jeu -->
-          <section id="activite" class="panel reveal" data-delay="120">
+          <section id="activite" data-section="monitoring" class="panel reveal" data-delay="120">
             <h2 style="font-size:1.25rem">Activité en jeu</h2>
             <p class="form-note" style="margin-top:.6rem">
-              Logs du script FiveM, filtrés sur l'entreprise du serveur : tout log d'une autre
-              entreprise est ignoré. Conservés 90 jours, puis purgés.
+              Logs du script FiveM, filtrés sur l'entreprise du serveur. Conservés 90 jours.
             </p>
-            <ul class="feature-list" style="margin-top:1rem">
-              <li><i class="dot"></i><div><b>Prises de service — 18 aujourd'hui</b><span>Le rôle « en service » est ajouté et retiré automatiquement. <span class="tag">monitoring.duty</span></span></div></li>
-              <li><i class="dot"></i><div><b>Embauches &amp; licenciements</b><span>Une embauche fait passer la candidature liée à « Accepté ». <span class="tag">monitoring.recruitment</span></span></div></li>
-              <li><i class="dot"></i><div><b>Factures &amp; ventes run</b><span>Montants, taxes et quantités journalisés pour les statistiques. <span class="tag">monitoring.invoice</span> <span class="tag">monitoring.sale</span></span></div></li>
-            </ul>
+            <div class="dash-flags" data-monitoring-head></div>
+            <ul class="feature-list" style="margin-top:1rem" data-list="monitoring"></ul>
+            <p class="form-note dash-state" data-state="monitoring" hidden></p>
           </section>
         </div>
 
         <!-- Coffre d'entreprise -->
-        <section id="coffre" class="panel reveal">
+        <section id="coffre" data-section="storage" class="panel reveal">
           <h2 style="font-size:1.25rem">Coffre d'entreprise</h2>
           <p class="form-note" style="margin-top:.6rem">
-            Chaque dépôt et chaque retrait alimente un registre par coffre. Le flux transporte à la
-            fois le mouvement et le stock qui en résulte : inutile de sommer l'historique pour
-            connaître l'état courant. Volontairement absent des commandes Discord — donnée
-            d'entreprise réservée à une page authentifiée comme celle-ci.
-            <span class="tag">monitoring.storage</span>
+            Le stock courant est la somme du registre : le bot n'entretient pas de compteur
+            mutable, l'historique fait foi et reste auditable. Donnée volontairement absente
+            des commandes Discord — réservée à une page authentifiée comme celle-ci.
           </p>
-          <div class="table-wrap" style="margin-top:1.2rem">
+
+          <h3 style="font-size:.95rem;margin-top:1.2rem">Stock courant</h3>
+          <div class="table-wrap" style="margin-top:.6rem">
             <table>
-              <thead><tr><th>Coffre</th><th>Article</th><th>Mouvement</th><th>Par</th><th>Stock après</th></tr></thead>
-              <tbody>
-                <tr><td>Entrepôt A</td><td>Plaques d'acier</td><td><span class="status"><i></i>Dépôt +40</span></td><td>Ethan Vance</td><td>312</td></tr>
-                <tr><td>Entrepôt A</td><td>Câblage</td><td><span class="status status--off"><i></i>Retrait −15</span></td><td>Marina L.</td><td>87</td></tr>
-                <tr><td>Bureau</td><td>Documents scellés</td><td><span class="status"><i></i>Dépôt +3</span></td><td>Poulpizar</td><td>24</td></tr>
-              </tbody>
+              <thead><tr><th>Coffre</th><th>Article</th><th>Quantité</th></tr></thead>
+              <tbody data-list="storage"></tbody>
+            </table>
+          </div>
+          <p class="form-note dash-state" data-state="storage" hidden></p>
+
+          <h3 style="font-size:.95rem;margin-top:1.6rem">Derniers mouvements</h3>
+          <div class="table-wrap" style="margin-top:.6rem">
+            <table>
+              <thead><tr><th>Coffre</th><th>Article</th><th>Mouvement</th><th>Par</th><th>Date</th></tr></thead>
+              <tbody data-list="storage-movements"></tbody>
             </table>
           </div>
         </section>
 
         <!-- Flux sortants -->
-        <section id="flux" class="panel reveal">
+        <section id="flux" data-section="webhooks" class="panel reveal">
           <h2 style="font-size:1.25rem">Flux sortants</h2>
           <p class="form-note" style="margin-top:.6rem">
-            Le bot pousse ses événements vers les destinataires configurés. Chaque envoi est signé en
-            HMAC-SHA256 (en-tête <b>X-Signature-256</b>) et doit être vérifié par le récepteur, sans
-            quoi n'importe qui connaissant l'URL pourrait injecter de fausses données. Un échec réseau
-            ou 5xx est réessayé avec un délai croissant, jusqu'à 10 tentatives ; un 4xx ne l'est
-            jamais, puisque la même requête obtiendrait la même réponse.
+            Le bot pousse ses événements vers les destinataires configurés, signés en
+            HMAC-SHA256. Un échec réseau ou 5xx est réessayé avec un délai croissant ; un 4xx
+            ne l'est jamais. Les secrets et les URL complètes ne quittent pas le serveur —
+            seul l'hôte de destination est affiché.
           </p>
           <div class="table-wrap" style="margin-top:1.2rem">
             <table>
-              <thead><tr><th>Événement</th><th>Contenu transmis</th><th>Dernier envoi</th><th>État</th></tr></thead>
-              <tbody>
-                <tr><td><span class="tag">recruitment.updated</span></td><td>Candidat, statut, recruteur, réponses, noms des pièces jointes</td><td>il y a 4 min</td><td><span class="status"><i></i>Actif</span></td></tr>
-                <tr><td><span class="tag">order.updated</span></td><td>Articles, sous-total, livraison, réduction, total, paiement, n° de facture</td><td>il y a 11 min</td><td><span class="status"><i></i>Actif</span></td></tr>
-                <tr><td><span class="tag">absence.updated</span></td><td>Dates, motif, statut, qui a traité</td><td>il y a 1 h</td><td><span class="status"><i></i>Actif</span></td></tr>
-                <tr><td><span class="tag">monitoring.storage</span></td><td>Coffre, article, sens et quantité, stock après</td><td>il y a 2 min</td><td><span class="status"><i></i>Actif</span></td></tr>
-                <tr><td><span class="tag tag--magenta">custom</span></td><td>Contenu libre — alimenté par une synchronisation Google Sheets toutes les 5 min</td><td>il y a 3 min</td><td><span class="status status--warn"><i></i>2 relances</span></td></tr>
-              </tbody>
+              <thead><tr><th>Événement</th><th>Destination</th><th>Google Sheets</th><th>État</th></tr></thead>
+              <tbody data-list="webhooks"></tbody>
             </table>
           </div>
-          <p class="form-note" style="margin-top:1rem">
-            Quatre autres types existent et ne sont pas abonnés ici :
-            <span class="tag">monitoring.duty</span>
-            <span class="tag">monitoring.recruitment</span>
-            <span class="tag">monitoring.invoice</span>
-            <span class="tag">monitoring.sale</span>.
-            Tous se gèrent au même endroit, depuis le panneau « Monitoring » du Discord.
-          </p>
+          <p class="form-note dash-state" data-state="webhooks" hidden></p>
         </section>
 
       </div>
@@ -245,5 +191,6 @@
   <script src="js/main.js"></script>
   <script src="js/discord-config.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

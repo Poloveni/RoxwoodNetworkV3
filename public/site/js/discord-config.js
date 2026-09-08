@@ -1,115 +1,81 @@
 /* ==========================================================================
-   Roxwood Network — Configuration de la connexion Discord
+   Roxwood Network — Configuration de l'espace membre
    --------------------------------------------------------------------------
    Ces valeurs sont PUBLIQUES par nature (elles partent dans le navigateur).
-   Un client ID et un ID de serveur ne sont pas des secrets : ils identifient,
-   ils n'autorisent rien. Ne mets JAMAIS le "Client Secret" de l'application
-   Discord dans ce fichier — il n'est pas nécessaire au flux utilisé ici.
+   Un client ID, un ID de serveur et une adresse d'API ne sont pas des secrets :
+   ils identifient, ils n'autorisent rien. Ne mets JAMAIS le "Client Secret" de
+   l'application Discord ici — il n'est pas necessaire au flux utilise.
 
-   À REMPLIR (voir le pas-à-pas en bas de fichier) :
-     1. clientId  — Application ID de l'application Discord DÉJÀ EXISTANTE
-                    du bot roxwood-network-entreprise (aucune application
-                    supplémentaire à créer)
-     2. guildId   — Discord > Paramètres > Avancés > Mode développeur activé,
-                    puis clic droit sur le serveur > « Copier l'identifiant »
+   La politique d'acces (qui voit le coffre, les factures, les candidatures) ne
+   se configure PAS ici : elle vit cote serveur, dans API_STAFF_ROLE_IDS du
+   fichier .env du bot. Une regle appliquee dans le navigateur serait purement
+   decorative — n'importe qui peut modifier ce fichier une fois telecharge.
    ========================================================================== */
 
 window.ROXWOOD_DISCORD = {
-  /* ---------- 1. Obligatoire ---------- */
+  /* ---------- 1. Identifiants Discord ---------- */
 
-  // Application ID de ton application Discord.
+  // Application ID de l'application Discord du bot roxwood-network-entreprise.
   clientId: "1541476885924683919",
 
-  // Identifiant du serveur dont l'appartenance ouvre l'espace membre.
-  // Serveur visé : « Roxwood Network | Espace Web ».
+  // Serveur dont l'appartenance ouvre l'espace membre.
   guildId: "1533030404817162300",
 
-  /* ---------- 2. Affichage ---------- */
+  /* ---------- 2. API de lecture ---------- */
 
-  // Nom affiché du serveur dans les messages de l'espace membre.
+  // Racine de l'API servie par le bot, derriere Caddy (voir src/http/ du depot du bot).
+  // Sans slash final.
+  apiBase: "https://roxwoodnetworkv3.duckdns.org",
+
+  /* ---------- 3. Affichage ---------- */
+
   guildName: "Roxwood Network | Espace Web",
-
-  // Invitation proposée à qui n'est pas encore sur le serveur.
   invite: "https://discord.gg/V4CGhfpn3k",
 
-  /* ---------- 3. Rôles (optionnel) ---------- */
-
-  // Laisse cet objet VIDE et chaque membre est simplement affiché comme
-  // « Membre ». Dès que tu y mets au moins une entrée, la connexion demande
-  // en plus le scope guilds.members.read et affiche le libellé du premier
-  // rôle reconnu, dans l'ordre de cette liste (le plus haut d'abord).
-  //
-  // Les clés sont des IDs de rôle : Discord > Paramètres du serveur > Rôles >
-  // clic droit sur un rôle > « Copier l'identifiant » (mode développeur actif).
-  //
-  //   roles: {
-  //     "1234567890123456789": "Direction",
-  //     "9876543210987654321": "Développeur",
-  //     "1122334455667788990": "Client",
-  //   },
-  roles: {},
-
-  // Libellé de repli quand aucun rôle de la liste ci-dessus ne correspond,
-  // ou quand la liste est vide.
-  defaultRole: "Membre",
+  // Libelles affiches selon ce que l'API repond dans `isStaff`.
+  roleLabels: {
+    staff: "Direction",
+    member: "Membre",
+  },
 
   /* ---------- 4. Session ---------- */
 
-  // Durée de validité de la session dans l'onglet, en heures.
+  // Duree de validite de la session dans l'onglet, en heures.
   sessionHours: 8,
 };
 
 /* ==========================================================================
-   PAS-À-PAS (5 minutes, une seule fois)
-   --------------------------------------------------------------------------
-   On réutilise l'application Discord du bot roxwood-network-entreprise :
-   celle dont l'Application ID est déjà dans CLIENT_ID du .env du VPS. Une
-   application Discord peut servir à la fois de bot et de client OAuth2 —
-   ce sont deux usages indépendants du même identifiant.
+   COMMENT CA MARCHE
 
-   Ajouter des URL de redirection ne touche NI le token du bot, NI ses
-   permissions, NI son comportement sur le serveur. Le bot n'a pas besoin
-   d'être redémarré, et rien n'est à modifier dans son dépôt.
+   1. Le visiteur clique "Se connecter avec Discord". Le navigateur part chez
+      Discord et revient avec un jeton d'acces dans l'URL (flux implicite : le
+      seul utilisable sans serveur, et le site est sur GitHub Pages).
 
-   1. https://discord.com/developers/applications > ouvre l'application
-      du bot > onglet « OAuth2 » > section « Redirects » > « Add Redirect ».
-      Ajoute EXACTEMENT ces URL, une par ligne (l'égalité est stricte :
-      un slash ou une majuscule en trop et Discord refuse la connexion) :
+   2. Le site envoie ce jeton a SON API (apiBase). C'est l'API qui demande a
+      Discord qui est cette personne, puis qui verifie — avec le jeton du bot,
+      qui fait autorite — qu'elle est bien membre du serveur et quels roles
+      elle detient. Le navigateur ne se declare jamais lui-meme staff.
 
-        https://poloveni.github.io/RoxwoodNetworkV3/site/membres.html
-        http://localhost:8080/site/membres.html
+      C'est pour ca que la connexion ne demande que le scope `identify` : le
+      site n'a pas besoin de lire la liste des serveurs du visiteur, le bot
+      sait deja.
 
-      La seconde ne sert qu'au développement local (npm run dev).
-      Clique « Save Changes ».
-
-   2. Sur la même page, copie l'« Application ID » (identique au CLIENT_ID
-      du .env du bot) et colle-le dans clientId ci-dessus.
-
-   3. Dans Discord : Paramètres utilisateur > Avancés > active « Mode
-      développeur ». Clic droit sur le serveur « Roxwood Network | Espace Web »
-      > « Copier l'identifiant » > colle-le dans guildId ci-dessus.
-
-   4. Commit + push : le workflow redéploie tout seul.
-
-   Rien d'autre n'est à configurer : pas de token, pas de secret, aucune
-   permission supplémentaire. L'application sert ici uniquement à demander
-   « identify » et « guilds » au nom de la personne qui se connecte, et
-   l'écran de consentement Discord affichera son nom — donc ta marque.
+   3. Chaque section du tableau de bord est ensuite chargee depuis l'API, qui
+      refuse celles auxquelles la personne n'a pas droit. Les donnees refusees
+      ne quittent pas le serveur.
 
    --------------------------------------------------------------------------
-   POUR PLUS TARD — brancher les vraies données du bot
-   --------------------------------------------------------------------------
-   Le bot stocke déjà, en PostgreSQL, tout ce qu'affiche le tableau de bord :
-   RecruitmentApplication (candidatures), ServiceOrder / OrderItem (commandes
-   et factures), AbsenceRequest (absences), MonitoringEvent (journaux).
+   SI TU CHANGES DE DOMAINE POUR L'API
 
-   Il n'expose en revanche aucun HTTP : c'est un client passerelle Discord,
-   ses webhooks sont sortants, et Postgres reste dans le réseau Docker. Pour
-   que ce site lise ces données il faudrait, dans l'ordre :
-     - un reverse proxy HTTPS devant le VPS (Caddy fait le certificat seul) —
-       obligatoire, un site en HTTPS ne peut pas appeler une API en HTTP ;
-     - une petite API de lecture dans le bot, qui valide le jeton Discord
-       reçu du navigateur et vérifie l'appartenance au serveur avant de
-       répondre, avec CORS ouvert pour https://poloveni.github.io.
-   C'est un ajout, pas une réécriture : les services de lecture existent déjà.
+   Mets a jour `apiBase` ci-dessus, ET la variable API_ALLOWED_ORIGINS du .env
+   du bot si l'adresse du SITE change (pas celle de l'API). Sans ca le
+   navigateur bloquera les appels au nom du CORS.
+
+   --------------------------------------------------------------------------
+   URL DE REDIRECTION A DECLARER DANS L'APPLICATION DISCORD
+
+   Onglet OAuth2 > Redirects, au caractere pres :
+
+     https://poloveni.github.io/RoxwoodNetworkV3/site/membres.html
+     http://localhost:8080/site/membres.html
    ========================================================================== */
