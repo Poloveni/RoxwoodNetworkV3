@@ -18,11 +18,11 @@ window.ROXWOOD_DISCORD = {
   /* ---------- 1. Obligatoire ---------- */
 
   // Application ID de ton application Discord.
-  clientId: "REMPLACER_PAR_APPLICATION_ID",
+  clientId: "1541476885924683919",
 
   // Identifiant du serveur dont l'appartenance ouvre l'espace membre.
   // Serveur visé : « Roxwood Network | Espace Web ».
-  guildId: "REMPLACER_PAR_ID_DU_SERVEUR",
+  guildId: "1533030404817162300",
 
   /* ---------- 2. Affichage ---------- */
 
